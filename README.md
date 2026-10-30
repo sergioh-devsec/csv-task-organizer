@@ -1,22 +1,29 @@
-# CSV Task Organizer · CyberSerchMX
+# Ordena tareas CSV
 
-Automatización local terminada en Python 3.10+, sin dependencias ni servicios externos. Convierte CSV en un plan limpio y descargable. No sube archivos ni envía correos.
+Soy Serch. Una lista repetida o mal ordenada puede robar más tiempo que una tarea difícil. Hice esta herramienta para explicar y automatizar esa limpieza.
 
-## Caso reproducible
+## Por qué y para qué
+Apliqué diseño de software separando lectura, validación, deduplicación y exportación. Desde la seguridad añadí neutralización de fórmulas y salidas que no sobrescriben archivos. Las filas descartadas quedan identificadas, para no esconder errores bajo un resultado limpio.
 
-La muestra ficticia contiene 6 registros: 1 duplicado, 1 tarea completada y 1 fecha inválida. El resultado contiene 3 pendientes, ordenados por prioridad y fecha; `Preparar informe` aparece primero.
+Lo estoy incorporando a mi laboratorio como parte de mi práctica profesional y mi curiosidad por construir herramientas útiles. Esta es una herramienta de muestra, no una historia de resultados de clientes.
 
-```sh
-python organizer.py sample.csv --output plan.csv
-python -m unittest -v
-```
+## Pruébalo
+Python 3.10 o posterior, sin dependencias externas. Desde esta carpeta:
 
-El archivo de salida debe ser nuevo: nunca se sobrescribe la entrada ni un archivo existente. Un resumen JSON en la terminal explica los descartes. Máximo 200 registros y 20 KB. Cabecera `tarea,responsable,prioridad,fecha,estado`; también admite `task,owner,priority,due,status`. Prioridad alta/media/baja; estado pendiente/en curso/completada. Fechas AAAA-MM-DD reales.
+    python organizer.py sample.csv --output tareas-ordenadas.csv
+    python -m unittest -v
 
-Los duplicados se comparan por los cinco campos normalizados. Tareas del mismo nombre con responsable diferente se conservan. Admite comillas CSV. Neutraliza prefijos de fórmulas en la exportación; revisa la configuración de tu hoja de cálculo antes de abrir archivos de origen desconocido.
+También puedes usar la [versión ligera en el navegador](https://sergioh-devsec.github.io/herramientas.html#csv), sin enviar el archivo a un servidor.
 
-## Límites
+## Proceso
+1. Definí la entrada y sus límites antes de programar.
+2. Separé lógica de procesamiento y argumentos de la terminal.
+3. Preparé una muestra ficticia y pruebas de entradas válidas e inválidas.
+4. Añadí exportación y mensajes de error que permiten revisar el resultado.
 
-No es un gestor de proyectos ni sincroniza servicios. Las filas inválidas se descartan y se informan por número de registro CSV (no por línea física si una celda tiene saltos de línea). Revisa el resumen antes de usar el plan. No publiques datos reales de clientes.
+## Alcance honesto
+Admite un esquema concreto ES/EN, 200 tareas y 20 KB. Las fechas usan AAAA-MM-DD. Quita completadas, no integra agendas ni servicios remotos. Revisa los descartes antes de usar el resultado.
 
-Demostración web relacionada: https://sergioh-devsec.github.io/#automation. Este repositorio contiene la versión CLI en Python.
+El archivo original no se modifica. No se recoge telemetría ni se envían datos. No publiques registros reales en incidencias. El próximo paso es ampliar formatos conservando las validaciones.
+
+— Serch · CyberSerchMX
